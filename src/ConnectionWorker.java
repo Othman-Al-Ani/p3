@@ -3,6 +3,7 @@ import se.mau.DA343A.VT25.projekt.net.ListeningSocketConnectionWorker;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.Timer;
 import java.util.TimerTask;
