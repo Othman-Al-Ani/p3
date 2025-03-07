@@ -4,10 +4,9 @@ public class Main {
         Thread thread = new Thread(client);
         thread.start();
 
-    public static void main(String[] args)
-    {
+
         Server server = new Server(42069);
-        Thread thread = new Thread(server);
-        thread.start();
+        Thread Sthread = new Thread(server);
+        Sthread.start();
     }
 }

@@ -49,6 +49,7 @@ public class Client extends JFrame implements ChangeListener, Runnable{
         slider.addChangeListener(this);
         try {
             Socket socket = new Socket(ip,port);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +64,7 @@ public class Client extends JFrame implements ChangeListener, Runnable{
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        System.out.println(slider.getValue());
+
         buffer.put(slider.getValue());
 
 
