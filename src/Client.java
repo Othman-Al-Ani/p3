@@ -27,6 +27,7 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
     private JLabel label;
     private JSlider slider;
     private Socket socket;
+    private String StringToken;
 
     public Client(int MaxPower, String ApplianceName, String ip, int port) throws IOException {
         slider = new JSlider(0, MaxPower, 0);
@@ -65,6 +66,8 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
             }
         });
 
+        SecurityTokens token = new SecurityTokens("martin");
+        StringToken = token.generateToken();
 
     }
 
@@ -79,7 +82,7 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
 
         // slider.addChangeListener(this);
 
-        SecurityTokens token = new SecurityTokens("martin");
+
 
         try {
             socket = new Socket(ip, port);
@@ -87,7 +90,7 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
             out = new DataOutputStream(socket.getOutputStream());
 
 
-            out.writeUTF(token.generateToken());
+            out.writeUTF(StringToken);
 
             out.writeUTF(ApplianceName);
 
@@ -123,10 +126,10 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
         try {
             System.out.println("closed");
             out.write(0);
-            out.write(buffer.get());
+            out.writeUTF(StringToken);
 
             socket.close();
-        } catch (IOException |InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
