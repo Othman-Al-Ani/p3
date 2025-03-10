@@ -25,7 +25,6 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
         this.securityTokens = securityTokens;
     }
 
-
     //inläsning av client info
     @Override
     public void newConnection(SocketAddress socketAddress, DataInput dataInput, DataOutput dataOutput) {
