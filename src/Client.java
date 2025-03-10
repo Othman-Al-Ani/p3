@@ -43,7 +43,6 @@ public class Client extends JFrame implements ChangeListener, Runnable{
         frame.setVisible(true);
 //        slider.addPropertyChangeListener("value",this );
 //        slider.addChangeListener(e -> {slider.firePropertyChange("value",0,slider.getValue());});
-
         slider.addChangeListener(this);
         try {
             Socket socket = new Socket(ip,port);

@@ -41,10 +41,8 @@ public class Server extends ListeningSocket {
                         SwingUtilities.invokeLater(()-> serverGUI.setTotalConsumption(consumption.calculateConsumption()));
                         SwingUtilities.invokeLater(() -> series.addValue((double) (System.currentTimeMillis()/1000), consumption.calculateConsumption()));
                     }
-                }
-                , 0, 1000);
+                }, 0, 1000);
     }
-
 
     @Override
     public ListeningSocketConnectionWorker createNewConnectionWorker() {
