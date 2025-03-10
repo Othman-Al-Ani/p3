@@ -1,18 +1,23 @@
 import se.mau.DA343A.VT25.projekt.Buffer;
+import se.mau.DA343A.VT25.projekt.IAppExitingCallback;
+import se.mau.DA343A.VT25.projekt.ServerGUI;
 import se.mau.DA343A.VT25.projekt.net.SecurityTokens;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.net.Socket;
 
-public class Client extends JFrame implements ChangeListener, Runnable{
+public class Client extends JFrame implements ChangeListener, Runnable, IAppExitingCallback {
 
 
+private IAppExitingCallback onExitingCallback;
     private String ApplianceName;
     private String ip;
     private int port;
@@ -21,8 +26,8 @@ public class Client extends JFrame implements ChangeListener, Runnable{
     private JFrame frame;
     private JLabel label;
     private JSlider slider;
-
-    public Client(int MaxPower, String ApplianceName, String ip, int port){
+    private Socket socket;
+    public Client(int MaxPower, String ApplianceName, String ip, int port) throws IOException {
         slider = new JSlider(0, MaxPower, 0);
         label = new JLabel(ApplianceName);
         frame = new JFrame();
@@ -51,6 +56,7 @@ public class Client extends JFrame implements ChangeListener, Runnable{
 
 
 
+         socket = new Socket(ip,port);
 
 
     }
@@ -65,7 +71,6 @@ public class Client extends JFrame implements ChangeListener, Runnable{
 
         slider.addChangeListener(this);
         try {
-            Socket socket = new Socket(ip,port);
 
             DataOutputStream out = new DataOutputStream( socket.getOutputStream());
 
@@ -103,6 +108,29 @@ public class Client extends JFrame implements ChangeListener, Runnable{
 
         buffer.put(slider.getValue());
 
+
+    }
+
+    protected void processWindowEvent(WindowEvent e) {
+        if (e.getID() == 201) {
+            if (this.onExitingCallback != null) {
+                onExitingCallback.exiting();
+            }
+
+            System.exit(0);
+        }
+
+        super.processWindowEvent(e);
+    }
+
+    @Override
+    public void exiting() {
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
