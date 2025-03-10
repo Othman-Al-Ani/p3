@@ -1,44 +1,26 @@
-import java.util.HashMap;
-
 public class ConsumptionData {
+    private double value;
+    private String name;
 
-    // denna håller consumption data från alla appliences.
-
-    //hashmapsen håller appliences.  string är vad det är  double är consumption value.
-
-    private HashMap<String,Double> listOfAppliences;
-
-    public ConsumptionData()
-    {
-        listOfAppliences = new HashMap<>();
+    public ConsumptionData(String name, double value){
+        this.value = value;
+        this.name = name;
     }
 
-
-    // flera klientar kan uppdatera consumption värdet så denna metod måste va syncronised.
-    public synchronized void updateApplienceValue(String name ,Double consumptionValue)
-    {
-        listOfAppliences.put(name,consumptionValue);
+    public double getValue() {
+        return value;
     }
 
-    //denna meotd handlar också om consumption value hantering av flera klienter så denna ska vara syncornized.
-    public synchronized double calculateConsumption (){
-
-        double total = 0;
-
-        for(double d: listOfAppliences.values())
-        {
-            total+= d;
-        }
-        return total;
+    public void setValue(double value) {
+        this.value = value;
     }
 
-    //upg: if a client sends the data incorrectly disconnect it.
-    // flera klientar kan tas bort så ha synzorncatsation. paramtern är akutella klient nament. vi tar bort den frpn hashmap
-    public synchronized void removeAppliance(String name)
-    {
-        listOfAppliences.remove(name);
+    public String getName() {
+        return name;
     }
 
-
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

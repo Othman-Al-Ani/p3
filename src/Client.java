@@ -5,6 +5,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -31,18 +33,14 @@ public class Client extends JFrame implements ChangeListener, Runnable{
 
         slider.setBounds(50,30,100,100);
 //        label.setBounds(50,60,100,100);
-
         frame.add(slider);
         frame.add(label);
 
-
-
     }
-
 
     @Override
     public void run() {
-        frame.show(true);
+        frame.setVisible(true);
 //        slider.addPropertyChangeListener("value",this );
 //        slider.addChangeListener(e -> {slider.firePropertyChange("value",0,slider.getValue());});
 
@@ -53,9 +51,7 @@ public class Client extends JFrame implements ChangeListener, Runnable{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
-
 
 //    @Override
 //    public void propertyChange(PropertyChangeEvent evt) {
@@ -64,9 +60,7 @@ public class Client extends JFrame implements ChangeListener, Runnable{
 
     @Override
     public void stateChanged(ChangeEvent e) {
-
         buffer.put(slider.getValue());
-
 
     }
 }
