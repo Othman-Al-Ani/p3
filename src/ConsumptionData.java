@@ -14,13 +14,14 @@ public class ConsumptionData {
     }
 
 
-    public void updateApplienceValue(String name ,Double consumptionValue)
+    // flera klientar kan uppdatera consumption värdet så denna metod måste va syncronised.
+    public synchronized void updateApplienceValue(String name ,Double consumptionValue)
     {
-
         listOfAppliences.put(name,consumptionValue);
     }
 
-    public double calculateConsumption (){
+    //denna meotd handlar också om consumption value hantering av flera klienter så denna ska vara syncornized.
+    public synchronized double calculateConsumption (){
 
         double total = 0;
 
@@ -31,6 +32,12 @@ public class ConsumptionData {
         return total;
     }
 
+    //upg: if a client sends the data incorrectly disconnect it.
+    // flera klientar kan tas bort så ha synzorncatsation. paramtern är akutella klient nament. vi tar bort den frpn hashmap
+    public synchronized void removeAppliance(String name)
+    {
+        listOfAppliences.remove(name);
+    }
 
 
 
