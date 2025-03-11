@@ -24,14 +24,16 @@ public class Server extends ListeningSocket {
         this.consumption = new Consumption();
         timer = new Timer();
         series = new LiveXYSeries<>("Comsumption data", 20);
-        //vad gör denna nedan
+
+
         SwingUtilities.invokeLater(()->serverGUI.createAndShowUI());
         SwingUtilities.invokeLater(()->serverGUI.addSeries(series));
-        securityTokens = new SecurityTokens("martinsKuk");
+        securityTokens = new SecurityTokens("P3-players");
         displayData();
 
     }
 
+    //uppdaterar gui
     public void displayData(){
         timer.scheduleAtFixedRate(
                 new TimerTask() {

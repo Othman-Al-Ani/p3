@@ -1,4 +1,8 @@
 public class ConsumptionData {
+
+    //varje applience ger oss consumptiondata. vilket är string namn och ett value i double.
+    // appleince uttrycks som consumptiondata objekt som lagras i vår consumption - vector
+
     private double value;
     private String name;
 

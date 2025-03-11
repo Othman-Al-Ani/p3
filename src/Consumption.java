@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 public class Consumption {
-    //vectorn håller appliences.  string är vad det är  double är consumption value.
+    //vectorn håller appliences.  string är typen av applience  double är consumption value.
 
     private Vector<ConsumptionData> listOfAppliences;
 

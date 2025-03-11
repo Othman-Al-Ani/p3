@@ -34,17 +34,34 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
             if(!securityTokens.verifyToken(token)){
                 return;
             }
-
             String applianceName = dataInput.readUTF();
-            double consumptionValue = dataInput.readInt(); // consumption värde
+            double consumptionValue = dataInput.readInt();
             consumption.addAppliance(applianceName, consumptionValue);
-            while (true) {
-                consumptionValue = dataInput.readDouble();
-                consumption.updateApplienceValue(applianceName, consumptionValue);
+
+            while(true)
+            {
+                //kontroll om client är connected eller frånkopplad:
+                int messageType = dataInput.readInt();
+
+                switch (messageType)
+                {
+                    case 1://öppem
+
+                        consumptionValue = dataInput.readInt();
+
+                        //skickar in de för sp datan hanteras
+                        consumption.updateApplienceValue(applianceName, consumptionValue);
+                        break;
+
+                    case 0:
+                        SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("Worker: " + applianceName + " is diconnected "  + Thread.currentThread().getName()) );
+                        return;
+                }
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            System.out.println("avslutad");
         }
     }
 

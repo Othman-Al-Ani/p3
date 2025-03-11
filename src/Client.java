@@ -73,7 +73,7 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
 
 
     @Override
-    public void run() {
+    public void run() {  // aktiv client
         frame.show(true);
         slider.addPropertyChangeListener("value", this);
         slider.addChangeListener(e -> {
@@ -98,8 +98,8 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
             while (true) {
 
 
-                out.write(1);
-                out.write(buffer.get());
+                out.writeInt(1);
+                out.writeInt(buffer.get());
 
 
             }
@@ -115,17 +115,18 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println(slider.getValue());
         buffer.put(slider.getValue());
 
     }
 
 
     @Override
-    public void exiting() {
+    public void exiting() {   // när client exitar
 
         try {
             System.out.println("closed");
-            out.write(0);
+            out.writeInt(0);
             out.writeUTF(StringToken);
 
             socket.close();
