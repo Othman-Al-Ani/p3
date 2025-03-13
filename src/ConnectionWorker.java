@@ -41,10 +41,14 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
             ConsumptionData data = new ConsumptionData(applianceName, consumptionValue);
             consumption.addAppliance(data);
 
+
+
             while(true)
             {
                 //kontroll om client är connected eller frånkopplad:
+
                 int messageType = dataInput.readInt();
+                System.out.println(messageType + "-Type");///errro här
 
                 switch (messageType)
                 {
@@ -58,14 +62,14 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
                     case 0:
                         consumption.removeAppliance(data);
                         SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("Worker " + tName + " : diconnected" + " -> " + applianceName  ));
-                        System.out.printf("..");
                         return;
                 }
+
             }
 
         } catch (IOException e) {
             //throw new RuntimeException(e);
-            System.out.println("avslutad");
+            System.out.println("FEL AVSLUTAD");
         }
     }
 

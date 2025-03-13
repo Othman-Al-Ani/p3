@@ -79,6 +79,7 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
             out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF(StringToken);
             out.writeUTF(ApplianceName);
+            out.writeInt(slider.getValue());
 
             while (!closing) {
 
@@ -86,6 +87,10 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
                 out.writeInt(buffer.get());
 
             }
+            System.out.println("utanför");
+            out.writeInt(0);
+            socket.close();
+
 
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -94,22 +99,13 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
     }
 
     public void updateSliderValue(){
-        if(!slider.getValueIsAdjusting()){
             buffer.put(slider.getValue());
-        }
     }
 
     @Override
     public void exiting() {   // när client exitar
         closing = true;
-
-        try {
-            out.writeInt(0);
-            out.writeUTF(StringToken);
-            socket.close();
-        } catch (IOException e) {
-            //throw new RuntimeException(e);
-        }
+        buffer.put(slider.getValue());
         frame.dispose();
     }
 
