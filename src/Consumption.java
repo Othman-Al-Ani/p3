@@ -15,7 +15,6 @@ public class Consumption {
         listOfAppliences.add(data);
     }
 
-
     public synchronized void updateApplienceValue(String name ,Double consumptionValue)
     {
         for(ConsumptionData applience : listOfAppliences){

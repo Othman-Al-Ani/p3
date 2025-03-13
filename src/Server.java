@@ -23,14 +23,12 @@ public class Server extends ListeningSocket {
         serverGUI = new ServerGUI("Server GUI");
         this.consumption = new Consumption();
         timer = new Timer();
-        series = new LiveXYSeries<>("Comsumption data", 20);
-
+        series = new LiveXYSeries<>("Total consumption", 20);
 
         SwingUtilities.invokeLater(()->serverGUI.createAndShowUI());
         SwingUtilities.invokeLater(()->serverGUI.addSeries(series));
         securityTokens = new SecurityTokens("goon");
         displayData();
-
     }
 
     //uppdaterar gui
@@ -50,4 +48,7 @@ public class Server extends ListeningSocket {
         ConnectionWorker connectionWorker = new ConnectionWorker(consumption, serverGUI, securityTokens);
         return connectionWorker;
     }
+
+
+
 }

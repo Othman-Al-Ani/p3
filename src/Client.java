@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
 
-public class Client extends JFrame implements ChangeListener, Runnable, IAppExitingCallback {
+public class Client extends JFrame implements Runnable, IAppExitingCallback {
 
 
     private IAppExitingCallback onExitingCallback;
@@ -66,26 +66,19 @@ public class Client extends JFrame implements ChangeListener, Runnable, IAppExit
 
         SecurityTokens token = new SecurityTokens("goon");
         StringToken = token.generateToken();
-
+        slider.addChangeListener(l -> updateSliderValue());
     }
 
     @Override
     public void run() {  // aktiv client
         frame.setVisible(true);
 
-
-        slider.addChangeListener(this);
-
         try {
             socket = new Socket(ip, port);
 
             out = new DataOutputStream(socket.getOutputStream());
-
-
             out.writeUTF(StringToken);
-
             out.writeUTF(ApplianceName);
-
 
             while (!closing) {
 
@@ -94,35 +87,28 @@ public class Client extends JFrame implements ChangeListener, Runnable, IAppExit
 
             }
 
-
-
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
 
         }
-
     }
 
-
-
-
-    @Override
-    public void stateChanged(ChangeEvent e) {
-        System.out.println(slider.getValue());
-        buffer.put(slider.getValue());
+    public void updateSliderValue(){
+        if(!slider.getValueIsAdjusting()){
+            buffer.put(slider.getValue());
+        }
     }
 
     @Override
     public void exiting() {   // när client exitar
         closing = true;
-        if(socket.isConnected()){
-            try {
-                out.writeInt(0);
-                out.writeUTF(StringToken);
-                socket.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+
+        try {
+            out.writeInt(0);
+            out.writeUTF(StringToken);
+            socket.close();
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
         }
         frame.dispose();
     }
