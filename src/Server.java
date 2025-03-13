@@ -63,10 +63,10 @@ public class Server extends ListeningSocket {
         String temp = name;
         if(applianceNames.contains(name)){
             int c = 1;
-            temp =  temp + c;
+            temp =  name + c;
             while(applianceNames.contains(temp)){
                 c++;
-                temp =  temp + c;
+                temp =  name + c;
 
             }
         }

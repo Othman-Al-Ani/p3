@@ -1,5 +1,3 @@
-package Client;
-
 import se.mau.DA343A.VT25.projekt.Buffer;
 import se.mau.DA343A.VT25.projekt.IAppExitingCallback;
 import se.mau.DA343A.VT25.projekt.net.SecurityTokens;
