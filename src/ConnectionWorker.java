@@ -19,7 +19,7 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
     private ServerGUI serverGUI;
     private SecurityTokens securityTokens;
 
-    public ConnectionWorker(Consumption consumption, ServerGUI serverGUI, SecurityTokens securityTokens){
+    public ConnectionWorker(Consumption consumption, ServerGUI  serverGUI, SecurityTokens securityTokens){
         this.consumption = consumption;
         this.serverGUI = serverGUI;
         this.securityTokens = securityTokens;
