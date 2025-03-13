@@ -11,24 +11,18 @@ import java.io.*;
 import java.net.Socket;
 
 public class Client extends JFrame implements Runnable, IAppExitingCallback {
-
-
-    private IAppExitingCallback onExitingCallback;
-    private String ApplianceName;
-    private String ip;
-    private int port;
-    private Buffer<Integer> buffer = new Buffer<>();
-    private DataOutputStream out;
-    private JFrame frame;
-    private JLabel label;
-    private JSlider slider;
-    private Socket socket;
-    private String StringToken;
+    private final String ApplianceName;
+    private final String ip;
+    private final int port;
+    private final Buffer<Integer> buffer = new Buffer<>();
+    private final JFrame frame;
+    private final JSlider slider;
+    private final String StringToken;
     private boolean closing = false;
 
     public Client(int MaxPower, String ApplianceName, String ip, int port) {
         slider = new JSlider(0, MaxPower, 0);
-        label = new JLabel(ApplianceName);
+        JLabel label = new JLabel(ApplianceName);
         frame = new JFrame();
         frame.setLayout(new GridLayout(2, 1));
         this.ip = ip;
@@ -63,7 +57,7 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
 
         SecurityTokens token = new SecurityTokens("goon");
         StringToken = token.generateToken();
-        slider.addChangeListener(l -> updateSliderValue());
+        slider.addChangeListener(_ -> updateSliderValue());
     }
 
     @Override
@@ -71,9 +65,10 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
         frame.setVisible(true);
 
         try {
-            socket = new Socket(ip, port);
+            Socket socket = new Socket(ip, port);
 
-            out = new DataOutputStream(socket.getOutputStream());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+
             out.writeUTF(StringToken);
             out.writeUTF(ApplianceName);
             out.writeInt(slider.getValue());
@@ -90,7 +85,6 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-
         }
     }
 

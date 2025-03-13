@@ -1,4 +1,4 @@
-import se.mau.DA343A.VT25.projekt.IAppExitingCallback;
+
 import se.mau.DA343A.VT25.projekt.ServerGUI;
 import se.mau.DA343A.VT25.projekt.net.ListeningSocketConnectionWorker;
 import se.mau.DA343A.VT25.projekt.net.SecurityTokens;
@@ -8,18 +8,16 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.net.SocketAddress;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class ConnectionWorker implements ListeningSocketConnectionWorker
 {
 
     // denna klass tar in data info, men datan hanteras i consumptiondata
-    private Consumption consumption;
-    private ServerGUI serverGUI;
-    private SecurityTokens securityTokens;
+    private final Consumption consumption;
+    private final ServerGUI serverGUI;
+    private final SecurityTokens securityTokens;
     private String applianceName;
-    private ConsumptionData data;
 
     public ConnectionWorker(Consumption consumption, ServerGUI  serverGUI, SecurityTokens securityTokens){
         this.consumption = consumption;
@@ -40,7 +38,7 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
             applianceName = dataInput.readUTF();
             double consumptionValue = dataInput.readInt();
             SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("New connection worker started on " + tName + " -> " + applianceName));
-            data = new ConsumptionData(applianceName, consumptionValue);
+            ConsumptionData data = new ConsumptionData(applianceName, consumptionValue);
             consumption.addAppliance(data);
 
             while(true)

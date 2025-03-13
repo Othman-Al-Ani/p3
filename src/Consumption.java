@@ -1,11 +1,10 @@
-import java.util.HashMap;
 import java.util.Vector;
 
 public class Consumption {
     //vectorn håller appliences.  string är typen av applience  double är consumption value.
 
-    private Vector<ConsumptionData> listOfAppliences;
-    private Server server;
+    private final Vector<ConsumptionData> listOfAppliences;
+    private final Server server;
 
     public Consumption(Server server)
     {

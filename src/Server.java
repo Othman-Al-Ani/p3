@@ -5,24 +5,22 @@ import se.mau.DA343A.VT25.projekt.net.ListeningSocketConnectionWorker;
 import se.mau.DA343A.VT25.projekt.net.SecurityTokens;
 
 import javax.swing.*;
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
 public class Server extends ListeningSocket {
 
-    private ServerGUI serverGUI;
-    private Consumption consumption;
+    private final ServerGUI serverGUI;
+    private final Consumption consumption;
 
-    private Timer timer;
-    private LiveXYSeries<Double> series;
+    private final Timer timer;
+    private final LiveXYSeries<Double> series;
 
-    private SecurityTokens securityTokens;
+    private final SecurityTokens securityTokens;
 
-    private Vector<LiveXYSeries> applianceSeries;
-    private Vector<String> applianceNames;
+    private final Vector<LiveXYSeries<Double>> applianceSeries;
+    private final Vector<String> applianceNames;
 
     public Server(int listeningPort) {
         super(listeningPort);
@@ -34,7 +32,7 @@ public class Server extends ListeningSocket {
         applianceNames = new Vector<>();
 
 
-        SwingUtilities.invokeLater(()->serverGUI.createAndShowUI());
+        SwingUtilities.invokeLater(serverGUI::createAndShowUI);
         SwingUtilities.invokeLater(()->serverGUI.addSeries(series));
         securityTokens = new SecurityTokens("goon");
         displayData();
@@ -79,8 +77,6 @@ public class Server extends ListeningSocket {
 
     @Override
     public ListeningSocketConnectionWorker createNewConnectionWorker() {
-        ConnectionWorker connectionWorker = new ConnectionWorker(consumption, serverGUI, securityTokens);
-
-        return connectionWorker;
+        return new ConnectionWorker(consumption, serverGUI, securityTokens);
     }
 }
