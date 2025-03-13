@@ -1,11 +1,10 @@
+package Client;
+
 import se.mau.DA343A.VT25.projekt.Buffer;
 import se.mau.DA343A.VT25.projekt.IAppExitingCallback;
-import se.mau.DA343A.VT25.projekt.ServerGUI;
 import se.mau.DA343A.VT25.projekt.net.SecurityTokens;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 
@@ -29,7 +28,7 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
     private String StringToken;
     private boolean closing = false;
 
-    public Client(int MaxPower, String ApplianceName, String ip, int port) throws IOException {
+    public Client(int MaxPower, String ApplianceName, String ip, int port) {
         slider = new JSlider(0, MaxPower, 0);
         label = new JLabel(ApplianceName);
         frame = new JFrame();
@@ -92,7 +91,7 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
 
 
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
 
         }
     }

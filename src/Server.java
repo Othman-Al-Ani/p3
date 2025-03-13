@@ -22,15 +22,16 @@ public class Server extends ListeningSocket {
     private SecurityTokens securityTokens;
 
     private Vector<LiveXYSeries> applianceSeries;
-
+    private Vector<String> applianceNames;
 
     public Server(int listeningPort) {
         super(listeningPort);
         serverGUI = new ServerGUI("Server GUI");
         this.consumption = new Consumption(this);
         timer = new Timer();
-        series = new LiveXYSeries<>("Comsumption data", 20);
+        series = new LiveXYSeries<>("Total Consumption", 20);
         applianceSeries = new Vector<>();
+        applianceNames = new Vector<>();
 
 
         SwingUtilities.invokeLater(()->serverGUI.createAndShowUI());
@@ -58,10 +59,22 @@ public class Server extends ListeningSocket {
                 }, 0, 1000);
     }
 
-    public void addNewApplianceSeries(String name ){
-       LiveXYSeries<Double> newSeries = new LiveXYSeries<>(name, 20);
-       applianceSeries.add(newSeries);
-       SwingUtilities.invokeLater(()->serverGUI.addSeries(newSeries));
+    public void addNewApplianceSeries(String name){
+        String temp = name;
+        if(applianceNames.contains(name)){
+            int c = 1;
+            temp =  temp + c;
+            while(applianceNames.contains(temp)){
+                c++;
+                temp =  temp + c;
+
+            }
+        }
+
+        applianceNames.add(temp);
+        LiveXYSeries<Double> newSeries = new LiveXYSeries<>(temp, 20);
+        applianceSeries.add(newSeries);
+        SwingUtilities.invokeLater(()->serverGUI.addSeries(newSeries));
     }
 
     @Override
