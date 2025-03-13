@@ -50,12 +50,7 @@ public class Server extends ListeningSocket {
                         SwingUtilities.invokeLater(() -> series.addValue((double) (System.currentTimeMillis()/1000), consumption.calculateConsumption()));
 
                         for (int i = 0; i < applianceSeries.size(); i++) {
-
-                            if (applianceSeries.get(i) ==null)
-                                    continue;
-
                             int finalI = i;
-                            System.out.println(i);
                             SwingUtilities.invokeLater(() -> applianceSeries.get(finalI).addValue((double) (System.currentTimeMillis()/1000), consumption.applianceValue(finalI)));
 
                         }
@@ -63,14 +58,11 @@ public class Server extends ListeningSocket {
                 }, 0, 1000);
     }
 
-    public void setApplianceSeries(String name ){
-
+    public void addNewApplianceSeries(String name ){
        LiveXYSeries<Double> newSeries = new LiveXYSeries<>(name, 20);
-        applianceSeries.add(newSeries);
-        SwingUtilities.invokeLater(()->serverGUI.addSeries(newSeries));
+       applianceSeries.add(newSeries);
+       SwingUtilities.invokeLater(()->serverGUI.addSeries(newSeries));
     }
-
-
 
     @Override
     public ListeningSocketConnectionWorker createNewConnectionWorker() {

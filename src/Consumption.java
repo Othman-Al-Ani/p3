@@ -5,7 +5,7 @@ public class Consumption {
     //vectorn håller appliences.  string är typen av applience  double är consumption value.
 
     private Vector<ConsumptionData> listOfAppliences;
-    Server server;
+    private Server server;
 
     public Consumption(Server server)
     {
@@ -16,27 +16,13 @@ public class Consumption {
     public synchronized void addAppliance(ConsumptionData data) {
         listOfAppliences.add(data);
         System.out.println(data.getName());
-        server.setApplianceSeries(data.getName());
+        server.addNewApplianceSeries(data.getName());
 
     }
 
     public double applianceValue(int postion){
         return listOfAppliences.get(postion).getValue();
     }
-
-    public synchronized void updateApplienceValue(String name ,Double consumptionValue)
-    {
-        for(ConsumptionData applience : listOfAppliences){
-            if(applience.getName().equals(name)){
-                applience.setValue(consumptionValue);
-            }
-        }
-    }
-
-    public synchronized void removeAppliance(ConsumptionData data) {
-        listOfAppliences.remove(data);
-    }
-
 
     public double calculateConsumption (){
         double total = 0;

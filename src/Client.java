@@ -87,7 +87,6 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
                 out.writeInt(buffer.get());
 
             }
-            System.out.println("utanför");
             out.writeInt(0);
             socket.close();
 

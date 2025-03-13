@@ -18,6 +18,8 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
     private Consumption consumption;
     private ServerGUI serverGUI;
     private SecurityTokens securityTokens;
+    private String applianceName;
+    private ConsumptionData data;
 
     public ConnectionWorker(Consumption consumption, ServerGUI  serverGUI, SecurityTokens securityTokens){
         this.consumption = consumption;
@@ -35,10 +37,10 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
             if(!securityTokens.verifyToken(token)){
                 return;
             }
-            String applianceName = dataInput.readUTF();
+            applianceName = dataInput.readUTF();
             double consumptionValue = dataInput.readInt();
             SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("New connection worker started on " + tName + " -> " + applianceName));
-            ConsumptionData data = new ConsumptionData(applianceName, consumptionValue);
+            data = new ConsumptionData(applianceName, consumptionValue);
             consumption.addAppliance(data);
 
             while(true)
@@ -58,7 +60,7 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
                         break;
 
                     case 0:
-                        consumption.removeAppliance(data);
+                        data.setValue(0);
                         SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("Worker " + tName + " : diconnected" + " -> " + applianceName  ));
                         return;
                 }
@@ -66,8 +68,7 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
             }
 
         } catch (IOException e) {
-            //throw new RuntimeException(e);
-            System.out.println("FEL AVSLUTAD");
+            e.printStackTrace();
         }
     }
 
