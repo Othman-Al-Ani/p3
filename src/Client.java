@@ -9,12 +9,11 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+
 import java.io.*;
 import java.net.Socket;
 
-public class Client extends JFrame implements PropertyChangeListener, Runnable, IAppExitingCallback {
+public class Client extends JFrame implements ChangeListener, Runnable, IAppExitingCallback {
 
 
     private IAppExitingCallback onExitingCallback;
@@ -73,12 +72,9 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
     @Override
     public void run() {  // aktiv client
         frame.setVisible(true);
-        slider.addPropertyChangeListener("value", this);
-        slider.addChangeListener(e -> {
-            slider.firePropertyChange("value", 0, slider.getValue());
-        });
 
-        // slider.addChangeListener(this);
+
+        slider.addChangeListener(this);
 
         try {
             socket = new Socket(ip, port);
@@ -108,13 +104,13 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
     }
 
 
+
+
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void stateChanged(ChangeEvent e) {
         System.out.println(slider.getValue());
         buffer.put(slider.getValue());
-
     }
-
 
     @Override
     public void exiting() {   // när client exitar
@@ -130,4 +126,5 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
         }
         frame.dispose();
     }
+
 }
