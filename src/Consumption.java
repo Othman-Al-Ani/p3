@@ -23,7 +23,6 @@ public class Consumption {
         return listOfAppliences.get(postion).getValue();
     }
 
-
     public synchronized void updateApplienceValue(String name ,Double consumptionValue)
     {
         for(ConsumptionData applience : listOfAppliences){
