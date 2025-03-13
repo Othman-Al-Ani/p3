@@ -41,8 +41,6 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
             ConsumptionData data = new ConsumptionData(applianceName, consumptionValue);
             consumption.addAppliance(data);
 
-
-
             while(true)
             {
                 //kontroll om client är connected eller frånkopplad:

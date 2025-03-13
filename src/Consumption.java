@@ -15,6 +15,7 @@ public class Consumption {
 
     public synchronized void addAppliance(ConsumptionData data) {
         listOfAppliences.add(data);
+        System.out.println(data.getName());
         server.setApplianceSeries(data.getName());
 
     }
@@ -32,7 +33,7 @@ public class Consumption {
         }
     }
 
-    public synchronized void removeAppliance(ConsumptionData data){
+    public synchronized void removeAppliance(ConsumptionData data) {
         listOfAppliences.remove(data);
     }
 
