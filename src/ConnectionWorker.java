@@ -28,7 +28,8 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
     //inläsning av client info
     @Override
     public void newConnection(SocketAddress socketAddress, DataInput dataInput, DataOutput dataOutput) {
-        SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("New connection worker started on " + Thread.currentThread().getName()) );
+        String tName = Thread.currentThread().getName();
+
         try {
             String token = dataInput.readUTF();
             if(!securityTokens.verifyToken(token)){
@@ -36,7 +37,9 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
             }
             String applianceName = dataInput.readUTF();
             double consumptionValue = dataInput.readInt();
-            consumption.addAppliance(applianceName, consumptionValue);
+            SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("New connection worker started on " + tName + " -> " + applianceName));
+            ConsumptionData data = new ConsumptionData(applianceName, consumptionValue);
+            consumption.addAppliance(data);
 
             while(true)
             {
@@ -45,16 +48,17 @@ public class ConnectionWorker implements ListeningSocketConnectionWorker
 
                 switch (messageType)
                 {
-                    case 1://öppem
+                    case 1://öppen
 
                         consumptionValue = dataInput.readInt();
-
+                        data.setValue(consumptionValue);
                         //skickar in de för sp datan hanteras
-                        consumption.updateApplienceValue(applianceName, consumptionValue);
                         break;
 
                     case 0:
-                        SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("Worker: " + applianceName + " is diconnected "  + Thread.currentThread().getName()) );
+                        consumption.removeAppliance(data);
+                        SwingUtilities.invokeLater(() -> serverGUI.addLogMessage("Worker " + tName + " : diconnected" + " -> " + applianceName  ));
+                        System.out.printf("..");
                         return;
                 }
             }

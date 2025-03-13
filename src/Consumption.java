@@ -11,8 +11,8 @@ public class Consumption {
         listOfAppliences = new Vector<>();
     }
 
-    public synchronized void addAppliance(String name, double initialValue) {
-        listOfAppliences.add(new ConsumptionData(name, initialValue));
+    public synchronized void addAppliance(ConsumptionData data) {
+        listOfAppliences.add(data);
     }
 
 
@@ -23,6 +23,10 @@ public class Consumption {
                 applience.setValue(consumptionValue);
             }
         }
+    }
+
+    public synchronized void removeAppliance(ConsumptionData data){
+        listOfAppliences.remove(data);
     }
 
     public double calculateConsumption (){

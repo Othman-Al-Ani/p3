@@ -28,6 +28,7 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
     private JSlider slider;
     private Socket socket;
     private String StringToken;
+    private boolean closing = false;
 
     public Client(int MaxPower, String ApplianceName, String ip, int port) throws IOException {
         slider = new JSlider(0, MaxPower, 0);
@@ -56,33 +57,28 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
         frame.add(label);
         frame.add(slider);
 
-
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-
                 exiting();
-
             }
         });
 
-        SecurityTokens token = new SecurityTokens("martin");
+        SecurityTokens token = new SecurityTokens("goon");
         StringToken = token.generateToken();
 
     }
 
-
     @Override
     public void run() {  // aktiv client
-        frame.show(true);
+        frame.setVisible(true);
         slider.addPropertyChangeListener("value", this);
         slider.addChangeListener(e -> {
             slider.firePropertyChange("value", 0, slider.getValue());
         });
 
         // slider.addChangeListener(this);
-
-
 
         try {
             socket = new Socket(ip, port);
@@ -95,14 +91,13 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
             out.writeUTF(ApplianceName);
 
 
-            while (true) {
-
+            while (!closing) {
 
                 out.writeInt(1);
                 out.writeInt(buffer.get());
 
-
             }
+
 
 
         } catch (IOException | InterruptedException e) {
@@ -123,16 +118,16 @@ public class Client extends JFrame implements PropertyChangeListener, Runnable, 
 
     @Override
     public void exiting() {   // när client exitar
-
-        try {
-            System.out.println("closed");
-            out.writeInt(0);
-            out.writeUTF(StringToken);
-
-            socket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        closing = true;
+        if(socket.isConnected()){
+            try {
+                out.writeInt(0);
+                out.writeUTF(StringToken);
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-
+        frame.dispose();
     }
 }

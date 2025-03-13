@@ -28,7 +28,7 @@ public class Server extends ListeningSocket {
 
         SwingUtilities.invokeLater(()->serverGUI.createAndShowUI());
         SwingUtilities.invokeLater(()->serverGUI.addSeries(series));
-        securityTokens = new SecurityTokens("P3-players");
+        securityTokens = new SecurityTokens("goon");
         displayData();
 
     }
@@ -39,7 +39,6 @@ public class Server extends ListeningSocket {
                 new TimerTask() {
                     @Override
                     public void run() {
-                        System.out.println(consumption.calculateConsumption());
                         SwingUtilities.invokeLater(()-> serverGUI.setTotalConsumption(consumption.calculateConsumption()));
                         SwingUtilities.invokeLater(() -> series.addValue((double) (System.currentTimeMillis()/1000), consumption.calculateConsumption()));
                     }
