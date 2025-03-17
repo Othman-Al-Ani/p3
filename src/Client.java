@@ -80,6 +80,7 @@ public class Client extends JFrame implements Runnable, IAppExitingCallback {
 
             }
             out.writeInt(0);
+            out.writeUTF(StringToken);
             socket.close();
 
 
